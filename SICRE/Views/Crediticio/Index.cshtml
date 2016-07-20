@@ -1,0 +1,93 @@
+﻿@model IEnumerable<SICRE.Models.Crediticio>
+
+@{
+    ViewBag.Title = "Perfil crediticio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Perfil crediticio</h2>
+
+<p>
+    @Html.ActionLink("Agregar perfil", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Crediticio", FormMethod.Post)) {
+<fieldset>
+    <legend>Búsqueda</legend>
+	<table>
+		<tr>
+			<td><div class="editor-label">@Html.Label("RUC cliente", new { @for = "ruc" })</div></td>
+			<td><div class="editor-field">@Html.TextBox("ruc")</div></td>
+			<td><input type="submit" value="Buscar" /></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Razon social cliente", new { @for = "razon" })</div></td>
+			<td><div class="editor-field">@Html.TextBox("razon")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Fecha de creación", new { @for = "fechacreacion" })</div></td>
+			<td><div class="editor-field">@Html.TextBox("fechacreacion")</div></td>
+			<td></td>
+		</tr>
+	</table>
+</fieldset>
+}
+
+@if (Model.Count() > 0) {
+
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cliente_ruc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cliente_razon)
+        </th>
+        <th>Deuda total</th>
+		<th>Entidades</th>
+		<th>Último período</th>
+        <th>Opciones</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cliente.ruc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cliente.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcalificacion.OrderByDescending(x => x.periodo.descripcion).FirstOrDefault().deuda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcalificacion.OrderByDescending(x => x.periodo.descripcion).FirstOrDefault().entidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lcalificacion.OrderByDescending(x => x.periodo.descripcion).FirstOrDefault().periodo.descripcion)
+        </td>
+        <td>
+            @Html.ActionLink("Modificar", "Edit", new { id = item.idcrediticio }) |
+            @Html.ActionLink("Consultar", "Details", new { id = item.idcrediticio })
+        </td>
+    </tr>
+}
+
+</table>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+$(function () {
+	$('#fechacreacion').datepicker({
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+		changeYear: true
+	});
+});
+</script>
+}

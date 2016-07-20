@@ -1,0 +1,69 @@
+﻿@model SICRE.Models.Calificacion
+@using (Ajax.BeginForm("CreateCalificacion", "Crediticio", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-edit", OnSuccess = "posteando" }, new { id = "form2" })) {
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Calificación</legend>
+
+		@Html.HiddenFor(model => model.idcalificacion)
+		@Html.HiddenFor(model => model.idcrediticio)
+		@Html.Hidden("OK", (string) ViewBag.OK)
+		@Html.Hidden("posicion", (string) ViewBag.posicion)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.idperiodo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idperiodo", "Seleccionar período")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.deuda)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.deuda)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.entidad)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.entidad)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.normal)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.normal)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.problema)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.problema)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.deficiente)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.deficiente)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.dudoso)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.dudoso)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.perdida)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.perdida)
+        </div>
+    </fieldset>
+    @Html.ValidationSummary(false)
+}

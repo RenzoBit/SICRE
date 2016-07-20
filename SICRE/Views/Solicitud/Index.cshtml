@@ -1,0 +1,126 @@
+﻿@model IEnumerable<SICRE.Models.Solicitud>
+
+@{
+    ViewBag.Title = "Solicitud de línea de crédito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Solicitud de línea de crédito</h2>
+
+<p>
+    @Html.ActionLink("Agregar solicitud", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Solicitud", FormMethod.Post)) {
+<fieldset>
+    <legend>Búsqueda</legend>
+	<table>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Importador", new { @for = "idimportador" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idimportador", "Todos")</div></td>
+			<td><input type="submit" value="Buscar" /></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Distribuidor", new { @for = "iddistribuidor" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("iddistribuidor", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Motivo", new { @for = "idmotivo" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idmotivo", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Estado de aprobación", new { @for = "idaprobacion" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idaprobacion", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Estado de habilitación", new { @for = "idhabilitacion" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idhabilitacion", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Fecha de creación", new { @for = "fechacreacion" })</div></td>
+			<td><div class="editor-field">@Html.TextBox("fechacreacion")</div></td>
+			<td></td>
+		</tr>
+	</table>
+</fieldset>
+}
+
+@if (Model.Count() > 0) {
+
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idimportador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iddistribuidor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idmotivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.monto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idaprobacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecharevision)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idhabilitacion)
+        </th>
+        <th>Opciones</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.importador.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.distribuidor.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.motivo.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.monto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.aprobacion.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecharevision)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.habilitacion.descripcion)
+        </td>
+        <td>
+            @Html.ActionLink("Modificar", "Edit", new { id = item.idsolicitud }) |
+            @Html.ActionLink("Consultar", "Details", new { id = item.idsolicitud })
+        </td>
+    </tr>
+}
+
+</table>
+	
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+$(function () {
+	$('#fechacreacion').datepicker({
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+		changeYear: true
+	});
+});
+</script>
+}

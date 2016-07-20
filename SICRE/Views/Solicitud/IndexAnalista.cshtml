@@ -1,0 +1,108 @@
+﻿@model IEnumerable<SICRE.Models.Solicitud>
+
+@{
+	ViewBag.Title = "Asignar analista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar analista</h2>
+
+@using (Html.BeginForm("IndexAnalista", "Solicitud", FormMethod.Post, new { id = "form1" })) {
+<fieldset>
+    <legend>Asignar analista</legend>
+	<input name="asignar" id="asignar" type="hidden" value="1"/>
+<table>
+	<tr>
+		<td><div class="editor-label">@Html.Label("Buscar por analista", new { @for = "idanalistab" })</div></td>
+		<td><div class="editor-field">@Html.DropDownList("idanalistab", "Todos")</div></td>
+		<td><input id="buscar" type="button" value="Buscar" /></td>
+	</tr>
+</table>
+</fieldset>
+	if (Model.Count() > 0) {
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idimportador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iddistribuidor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idmotivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.monto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idanalista)
+        </th>
+        <th>
+			@Html.DisplayName("Seleccionar")
+			<br /><input id="select_all" type="checkbox"/>
+        </th>
+    </tr>
+		@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.importador.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.distribuidor.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.motivo.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.monto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.analista.nombre)
+        </td>
+        <td>
+            <input id="idsolicitud @item.idsolicitud" name="idsolicitud" type="checkbox" value="@item.idsolicitud"/>
+        </td>
+    </tr>
+		}
+</table>
+<table>
+	<tr>
+		<td><div class="editor-label">@Html.Label("Asignar a", new { @for = "idanalista" })</div></td>
+		<td><div class="editor-field">@Html.DropDownList("idanalista", "Seleccionar analista")</div></td>
+		<td><input id="guardar" type="button" value="Guardar" /></td>
+		<td><input id="limpiar" type="button" value="Limpiar" /></td>
+	</tr>
+</table>
+	}
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryui")
+	<script type="text/javascript">
+	$(function () {
+		$('#guardar').click(function (event) {
+			event.preventDefault();
+			$('#asignar').val('1');
+			if ($('#idanalista').val() == '')
+				alert('Seleccione un analista');
+			else
+				$('#form1').submit();
+		});
+		$('#buscar').click(function (event) {
+			event.preventDefault();
+			$('#asignar').val('0');
+			$('#form1').submit();
+		});
+		$('#limpiar').click(function (event) {
+			event.preventDefault();
+			$('#select_all').attr('checked', false);
+			$("INPUT[id^='idsolicitud']").attr('checked', false);
+		});
+		$('#select_all').change(function () {
+			var checkboxes = $(this).closest('#form1').find(':checkbox');
+			checkboxes.prop('checked', $(this).is(':checked'));
+		});
+	});
+	</script>
+}

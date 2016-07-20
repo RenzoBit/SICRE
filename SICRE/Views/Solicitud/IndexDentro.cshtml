@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SICRE.Models.Solicitud>
+
+@{
+    ViewBag.Title = "Asignar L.C. dentro de autonomía";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar L.C. dentro de autonomía</h2>
+
+@using (Html.BeginForm("IndexDentro", "Solicitud", FormMethod.Post)) {
+<fieldset>
+    <legend>Búsqueda</legend>
+	<table>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Importador", new { @for = "idimportador" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idimportador", "Todos")</div></td>
+			<td><input type="submit" value="Buscar" /></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Distribuidor", new { @for = "iddistribuidor" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("iddistribuidor", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Motivo", new { @for = "idmotivo" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idmotivo", "Todos")</div></td>
+			<td></td>
+		</tr>
+	</table>
+</fieldset>
+}
+
+@if (Model.Count() > 0) {
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idimportador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iddistribuidor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idmotivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.monto)
+        </th>
+        <th>Opciones</th>
+    </tr>
+	@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.importador.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.distribuidor.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.motivo.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.monto)
+        </td>
+        <td>
+            @Html.ActionLink("Asignar", "CreateDentro", new { id = item.idsolicitud }) |
+            @Html.ActionLink("Modificar", "CreateDentro", new { id = item.idsolicitud })
+        </td>
+    </tr>
+	}
+</table>
+}

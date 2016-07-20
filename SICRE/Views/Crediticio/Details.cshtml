@@ -1,0 +1,51 @@
+﻿@model SICRE.Models.Crediticio
+
+@{
+    ViewBag.Title = "Consultar perfil crediticio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consultar perfil crediticio</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Consultar perfil crediticio</legend>
+
+        @Html.HiddenFor(model => model.idcrediticio)
+        @Html.HiddenFor(model => model.idpersona)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cliente_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.cliente_ruc, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cliente_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.cliente_razon, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.fechacreacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.fechacreacion, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+<div id="lcalificacion">@{ Html.RenderAction("IndexCalificacion2"); }</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

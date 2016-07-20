@@ -1,0 +1,156 @@
+﻿@model SICRE.Models.Solicitud
+
+@{
+    ViewBag.Title = "Agregar solicitud de línea de crédito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agregar solicitud de línea de crédito</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Agregar solicitud de línea de crédito</legend>
+
+        @Html.HiddenFor(model => model.idimportador)
+        @Html.HiddenFor(model => model.iddistribuidor)
+        @Html.HiddenFor(model => model.idanalista)
+        @Html.HiddenFor(model => model.idaprobacion)
+        @Html.HiddenFor(model => model.idhabilitacion)
+        @Html.HiddenFor(model => model.fecharevision)
+        @Html.HiddenFor(model => model.observacionaprobacion)
+        @Html.HiddenFor(model => model.observacionhabilitacion)
+        @Html.HiddenFor(model => model.aprobado)
+        @Html.HiddenFor(model => model.garantizado)
+        @Html.HiddenFor(model => model.garantia)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.idmotivo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idmotivo", "Seleccione motivo")
+            @Html.ValidationMessageFor(model => model.idmotivo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.monto)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.monto)
+            @Html.ValidationMessageFor(model => model.monto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.fechacreacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.fechacreacion, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.fechacreacion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.importador_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.importador_ruc)
+            @Html.ValidationMessageFor(model => model.importador_ruc)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.importador_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.importador_razon, new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.importador_razon)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.distribuidor_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.distribuidor_ruc)
+            @Html.ValidationMessageFor(model => model.distribuidor_ruc)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.distribuidor_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.distribuidor_razon, new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.distribuidor_razon)
+        </div>
+
+        <p>
+            <input type="submit" value="Guardar solicitud" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+$(function () {
+	$('#importador_ruc').autocomplete({
+		source: function (request, response) {
+			$.ajax({
+				url: '/Solicitud/ClienteList',
+				type: 'POST',
+				dataType: 'json',
+				data: { term: request.term },
+				success: function (data) {
+					response($.map(data, function (item) {
+						return {
+							label: item.ruc + ' | ' + item.razon,
+							value: item.idpersona,
+							ruc: item.ruc,
+							razon: item.razon
+						};
+					}));
+					$('#idimportador').val('');
+				}
+			});
+		},
+		select: function (event, ui) {
+			$('#importador_ruc').val(ui.item.ruc);
+			$('#importador_razon').val(ui.item.razon);
+			$('#idimportador').val(ui.item.value);
+			return false;
+		}
+	});
+	$('#distribuidor_ruc').autocomplete({
+		source: function (request, response) {
+			$.ajax({
+				url: '/Solicitud/ClienteList',
+				type: 'POST',
+				dataType: 'json',
+				data: { term: request.term },
+				success: function (data) {
+					response($.map(data, function (item) {
+						return {
+							label: item.ruc + ' | ' + item.razon,
+							value: item.idpersona,
+							ruc: item.ruc,
+							razon: item.razon
+						};
+					}));
+					$('#iddistribuidor').val('');
+				}
+			});
+		},
+		select: function (event, ui) {
+			$('#distribuidor_ruc').val(ui.item.ruc);
+			$('#distribuidor_razon').val(ui.item.razon);
+			$('#iddistribuidor').val(ui.item.value);
+			return false;
+		}
+	});
+});
+</script>
+}

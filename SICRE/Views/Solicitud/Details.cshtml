@@ -1,0 +1,87 @@
+﻿@model SICRE.Models.Solicitud
+
+@{
+    ViewBag.Title = "Consultar solicitud de línea de crédito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consultar solicitud de línea de crédito</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Consultar solicitud de línea de crédito</legend>
+
+        @Html.HiddenFor(model => model.idsolicitud)
+        @Html.HiddenFor(model => model.idimportador)
+        @Html.HiddenFor(model => model.idanalista)
+        @Html.HiddenFor(model => model.iddistribuidor)
+        @Html.HiddenFor(model => model.idaprobacion)
+        @Html.HiddenFor(model => model.idhabilitacion)
+        @Html.HiddenFor(model => model.fecharevision)
+        @Html.HiddenFor(model => model.observacionaprobacion)
+        @Html.HiddenFor(model => model.observacionhabilitacion)
+        @Html.HiddenFor(model => model.aprobado)
+        @Html.HiddenFor(model => model.garantizado)
+        @Html.HiddenFor(model => model.garantia)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.idmotivo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idmotivo", null, "Seleccione motivo", new { disabled = "disabled" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.monto)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.monto, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.fechacreacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.fechacreacion, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.importador_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.importador_ruc, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.importador_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.importador_razon, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.distribuidor_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.distribuidor_ruc, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.distribuidor_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.distribuidor_razon, new { @readonly = "readonly" })
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

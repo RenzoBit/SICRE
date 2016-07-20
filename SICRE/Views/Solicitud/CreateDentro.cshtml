@@ -1,0 +1,137 @@
+﻿@model SICRE.Models.Solicitud
+
+@{
+	ViewBag.Title = "Asignar L.C. dentro de autonomía";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar L.C. dentro de autonomía</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Solicitud</legend>
+
+        @Html.HiddenFor(model => model.idsolicitud)
+        @Html.HiddenFor(model => model.idimportador)
+        @Html.HiddenFor(model => model.iddistribuidor)
+        @Html.HiddenFor(model => model.idanalista)
+        @Html.HiddenFor(model => model.idhabilitacion)
+        @Html.HiddenFor(model => model.idmotivo)
+        @Html.HiddenFor(model => model.monto)
+        @Html.HiddenFor(model => model.fechacreacion)
+        @Html.HiddenFor(model => model.fecharevision)
+        @Html.HiddenFor(model => model.observacionhabilitacion)
+        @Html.HiddenFor(model => model.importador_ruc)
+        @Html.HiddenFor(model => model.distribuidor_ruc)
+        @Html.HiddenFor(model => model.importador_razon)
+        @Html.HiddenFor(model => model.distribuidor_razon)
+
+		<div class="editor-label">
+            @Html.LabelFor(model => model.idimportador)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idimportador", null, "Seleccione importador", new { disabled = "disabled" })
+        </div>
+
+		<div class="editor-label">
+            @Html.LabelFor(model => model.iddistribuidor)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("iddistribuidor", null, "Seleccione distribuidor", new { disabled = "disabled" })
+        </div>
+
+		<div class="editor-label">
+            @Html.LabelFor(model => model.idmotivo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idmotivo", null, "Seleccione motivo", new { disabled = "disabled" })
+        </div>
+
+		<div class="editor-label">
+            @Html.LabelFor(model => model.monto)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.monto, new { @readonly = "readonly" })
+        </div>
+
+		<hr width="50%" align="left" />
+		
+        <div class="editor-label">
+            @Html.Label("Seleccionar dictamen")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("idaprobacion", "Seleccione dictamen")
+            @Html.ValidationMessageFor(model => model.idaprobacion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.aprobado)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.aprobado)
+            @Html.ValidationMessageFor(model => model.aprobado)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.garantia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.garantia)
+            @Html.ValidationMessageFor(model => model.garantia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.garantizado)
+        </div>
+        <div class="editor-field">
+			@if (Model.garantia) {
+            @Html.TextBoxFor(model => model.garantizado)
+			} else {
+			@Html.TextBoxFor(model => model.garantizado, new { @readonly = "readonly" })
+			}
+            @Html.ValidationMessageFor(model => model.garantizado)
+        </div>
+		
+        <div class="editor-label">
+            @Html.Label("Observación")
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.observacionaprobacion)
+            @Html.ValidationMessageFor(model => model.observacionaprobacion)
+        </div>
+
+        <p>
+            <input type="submit" value="Grabar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Cancelar", "IndexDentro")
+</div>
+
+<hr width="50%" align="left" />
+
+<h2>Perfil crediticio</h2>
+
+<div id="lcalificacion">@{ Html.RenderAction("IndexCalificacion2", "Crediticio"); }</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+<script type="text/jscript">
+$(function () {
+	$('#garantia').change(function () {
+		if ($('#garantia').is(':checked')) {
+			$('#garantizado').prop('readonly', false);
+		} else {
+			$('#garantizado').prop('readonly', true);
+			$('#garantizado').val('0.00');
+		}
+	});
+});
+</script>
+}

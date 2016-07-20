@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SICRE.Models.Calificacion>
+
+@if (Model.Count() > 0) {
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idperiodo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deuda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.entidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.normal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.problema)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deficiente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dudoso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.perdida)
+        </th>
+        <th>Opciones</th>
+    </tr>
+@{ int i = 0; }
+@foreach (var item in Model) {
+	i++;
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.periodo.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deuda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.entidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.normal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.problema)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deficiente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dudoso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.perdida)
+        </td>
+        <td>
+			@Html.ActionLink("Modificar", "CreateCalificacion", new { idcalificacion = item.idcalificacion, idcrediticio = item.idcrediticio, posicion = i }, new { @class = "crea" })
+        </td>
+    </tr>
+}
+</table>
+}

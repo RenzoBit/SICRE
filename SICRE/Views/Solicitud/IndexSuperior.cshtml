@@ -1,0 +1,91 @@
+﻿@model IEnumerable<SICRE.Models.Solicitud>
+
+@{
+    ViewBag.Title = "Asignar L.C. superior a autonomía";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar L.C. superior a autonomía</h2>
+
+@using (Html.BeginForm("IndexSuperior", "Solicitud", FormMethod.Post)) {
+<fieldset>
+    <legend>Búsqueda</legend>
+	<table>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Analista", new { @for = "idanalista" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idanalista", "Todos")</div></td>
+			<td><input type="submit" value="Buscar" /></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Estado", new { @for = "idhabilitacion" })</div></td>
+			<td><div class="editor-field">@Html.DropDownList("idhabilitacion", "Todos")</div></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><div class="editor-label">@Html.Label("Fecha de recomendación", new { @for = "fecharevision" })</div></td>
+			<td><div class="editor-field">@Html.TextBox("fecharevision")</div></td>
+			<td></td>
+		</tr>
+	</table>
+</fieldset>
+}
+
+@if (Model.Count() > 0) {
+<table class="rvtabla">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idanalista)
+        </th>
+        <th>
+            @Html.Display("Estado")
+        </th>
+        <th>
+            @Html.Display("Fecha recomendación")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idimportador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iddistribuidor)
+        </th>
+        <th>Opciones</th>
+    </tr>
+	@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.analista.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.habilitacion.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecharevision)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.importador.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.distribuidor.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Asignar", "CreateSuperior", new { id = item.idsolicitud }, new { onclick = "return false;" } ) |
+            @Html.ActionLink("Modificar", "CreateSuperior", new { id = item.idsolicitud }, new { onclick = "return false;" })
+        </td>
+    </tr>
+	}
+</table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+$(function () {
+	$('#fecharevision').datepicker({
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+		changeYear: true
+	});
+});
+</script>
+}

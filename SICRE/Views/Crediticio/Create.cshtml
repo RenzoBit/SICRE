@@ -1,0 +1,132 @@
+﻿@model SICRE.Models.Crediticio
+
+@{
+    ViewBag.Title = "Agregar perfil crediticio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agregar perfil crediticio</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Agregar perfil crediticio</legend>
+
+        @Html.HiddenFor(model => model.idpersona)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cliente_ruc)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cliente_ruc)
+            @Html.ValidationMessageFor(model => model.cliente_ruc)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cliente_razon)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.cliente_razon, new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.cliente_razon)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.fechacreacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.fechacreacion, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.fechacreacion)
+        </div>
+
+        <p>
+            <input id="botoncito" type="submit" value="Guardar perfil"/>
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+    @Html.ActionLink("Agregar calificación", "CreateCalificacion", new { idcalificacion = 0, idcrediticio = 0, posicion = 0 }, new { @class = "crea" })
+    @Html.ValidationMessageFor(model => model.idpersona)
+</div>
+
+<div id="lcalificacion">@{ Html.RenderAction("IndexCalificacion"); }</div>
+
+<div id="dialog-edit" style="display: none"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+<script type="text/jscript">
+url = '';
+$(function () {
+	$('#cliente_ruc').autocomplete({
+		source: function (request, response) {
+			$.ajax({
+				url: '/Solicitud/ClienteList',
+				type: 'POST',
+				dataType: 'json',
+				data: { term: request.term },
+				success: function (data) {
+					response($.map(data, function (item) {
+						return {
+							label: item.ruc + ' | ' + item.razon,
+							value: item.idpersona,
+							ruc: item.ruc,
+							razon: item.razon
+						};
+					}));
+					$('#idpersona').val('');
+				}
+			});
+		},
+		select: function (event, ui) {
+			$('#cliente_ruc').val(ui.item.ruc);
+			$('#cliente_razon').val(ui.item.razon);
+			$('#idpersona').val(ui.item.value);
+			return false;
+		}
+	});
+	$.ajaxSetup({ cache: false });
+	$('#dialog-edit').dialog({
+		dialogClass: 'dlgfixed',
+		position: 'center',
+		title: 'Calificación',
+		autoOpen: false,
+		resizable: false,
+		height: 650,
+		width: 400,
+		show: { effect: 'drop', direction: 'up' },
+		modal: true,
+		draggable: true,
+		open: function (event, ui) {
+			$(this).load(url);
+		},
+		buttons: {
+			'Guardar': function () {
+				$('#form2').submit();
+			},
+			'Cancelar': function () {
+				$(this).dialog('close');
+			}
+		}
+	}).css('font-size', '.8em');
+	$('.crea').live('click', function (e) {
+		e.preventDefault();
+		url = $(this).attr('href');
+		$('#dialog-edit').dialog('open');
+		return false;
+	});
+	$('.dlgfixed').center(false);
+});
+
+function posteando() {
+	if ($('#OK').val() == '1') {
+		$('#dialog-edit').dialog('close');
+		$('#lcalificacion').load('@Url.Action("IndexCalificacion")');
+	}
+}
+</script>
+}
